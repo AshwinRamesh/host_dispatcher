@@ -1,1 +1,5 @@
 *.o
+hostd
+sigtrap
+report.aux
+report.log
