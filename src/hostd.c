@@ -8,10 +8,26 @@
 #include <signal.h>
 
 
-#define MAX_ARGS 1024
+int main(int argc, char const *argv[]){
 
-int main(int argc, char const *argv[])
-{
-	printf("Test\n");
+	/*Initialise Variables*/
+	FILE *file; // input file
+	process_queue = NULL; // the pcb queue
+
+	if (argc != 2) {
+		printf("%s\n", "Usage: hostd <filename>");
+		return EXIT_FAILURE;
+	}
+	else if (!(file = fopen(argv[1],"r"))) {
+		printf("%s\n", "File does not exist.");
+		return EXIT_FAILURE;
+	}
+
+	/* Get process queue */
+	process_queue = read_file(file);
+	fclose(file);
+	file = NULL;
+
+	/* TODO */
 	return 0;
 }

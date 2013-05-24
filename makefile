@@ -5,7 +5,7 @@ all: hostd sigtrap
 .DEFAULT: all
 
 hostd: src/hostd.c inc/hostd.h
-		gcc src/hostd.c -o hostd
+		gcc -Wall src/hostd.c src/pcb.c src/readinput.c -o hostd
 
 sigtrap:  src/sigtrap.c
-		gcc src/sigtrap.c -o sigtrap
+		gcc -Wall src/sigtrap.c -o sigtrap
