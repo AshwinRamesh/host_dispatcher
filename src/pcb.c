@@ -19,13 +19,32 @@ PcbPtr pcb_get_tail(PcbPtr head) {
 	return head;
 }
 
-/* Remove head of queue and return it */
-PcbPtr pcb_dequeue(PcbPtr *head){
-	if(head == NULL) {
+/* Remove pcb in queue and return it */
+PcbPtr pcb_dequeue(PcbPtr *queue_head,PcbPtr *node){
+	if((*node) == NULL) {
 		return NULL; // no more processes left
 	}
-	PcbPtr temp_pcb = *head;
-	*head = (*head)->next;
+	PcbPtr temp_pcb = *node;
+	PcbPtr new_node = (*node)->next;
+	if (new_node == NULL && (*node)->prev == NULL) { // last node in queue
+		//printf("%s\n", "new head is null");
+		*queue_head = NULL;
+		return *node;
+	}
+	if (temp_pcb->prev != NULL && temp_pcb->next != NULL) { //  inner node (neither head or tail)
+		//printf("%s\n", "inner node");
+		new_node->prev = temp_pcb->prev;
+	}
+	else if (temp_pcb->prev == NULL) { // head node
+		//printf("%s\n", "head node");
+		new_node->prev = NULL;
+		*queue_head =new_node; // reset the queue head
+	}
+	else { // tail node
+		//printf("%s\n", "tail node");
+		temp_pcb->prev->next = NULL;
+	}
+	temp_pcb->prev = NULL;
 	temp_pcb->next = NULL;
 	return temp_pcb;
 }
@@ -109,7 +128,7 @@ PcbPtr pcb_free_all(PcbPtr pcb_head) {
 }
 
 PcbPtr pcb_start(PcbPtr process) {
-	printf("Starting Process: %d\n", process->id);
+	//printf("Starting Process: %d\n", process->id);
 	process->status = RUNNING;
 	switch(process->pid = fork()) {
 		case -1:
@@ -118,7 +137,7 @@ PcbPtr pcb_start(PcbPtr process) {
 			break;
 		case 0:
 			process->status = RUNNING;
-			printf(" ARGS: %s\n", process->args[1]);
+			//printf(" ARGS: %s\n", process->args[1]);
 			execvp(process->args[0],process->args);
 			break;
 		default:
@@ -132,9 +151,41 @@ PcbPtr pcb_terminate(PcbPtr process) {
 		fprintf(stderr, "Termination failed for pid: %d\n", process->pid);
 		return NULL;
 	}
-	printf("Terminating ID: %d\n", process->id);
+	//printf("Terminating ID: %d\n", process->id);
 	int status;
 	process->status = STOPPED;
 	waitpid(process->pid,&status,WUNTRACED);
 	return process;
+}
+
+/* Function to check if the linked list is correct */
+void pcb_printList(PcbPtr queue) {
+	PcbPtr last;
+	int temp;
+	printf("%s\n", "Testing Forwards:");
+	while (queue != NULL) {
+		if (queue->next == NULL) {
+			temp = 8888;
+		}
+		else {
+			temp = queue->next->id;
+		}
+		printf("Current Process: %d Next Process: %d\n",queue->id,temp );
+		last = queue;
+		queue = queue->next;
+	}
+	printf("%s\n", "Testing Backwards");
+	queue = last;
+	while(queue != NULL) {
+		if (queue->prev == NULL) {
+			temp = 9999;
+		}
+		else {
+			temp = queue->prev->id;
+		}
+		printf("Current Process: %d Prev Process: %d\n",queue->id,temp );
+		last = queue;
+		queue = queue->prev;
+	}
+	printf("%s\n", "Finished Testing");
 }

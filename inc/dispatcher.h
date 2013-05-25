@@ -4,7 +4,7 @@
 #include  "pcb.h"
 #include <stdio.h>
 
-void running_processes(PcbPtr queue);
+PcbPtr running_processes(PcbPtr queue);
 void start_processes(PcbPtr queue);
 void dispatcher(PcbPtr queue);
 

@@ -44,7 +44,7 @@ typedef struct pcb Pcb;
 typedef Pcb * PcbPtr;
 
 PcbPtr pcb_get_tail(PcbPtr head);
-PcbPtr pcb_dequeue(PcbPtr *head);
+PcbPtr pcb_dequeue(PcbPtr *queue_head,PcbPtr *node);
 PcbPtr pcb_enqueue_tail(PcbPtr tail, PcbPtr child);
 PcbPtr pcb_enqueue(PcbPtr head, PcbPtr child);
 PcbPtr pcb_create(int arrival_time, int priority, int processor_time, int mbytes, int num_printers, int num_scanners, int num_modems, int num_cds);
@@ -52,4 +52,5 @@ void pcb_free(PcbPtr process);
 PcbPtr pcb_free_all(PcbPtr pcb_head);
 PcbPtr pcb_start(PcbPtr process);
 PcbPtr pcb_terminate(PcbPtr process);
+void pcb_printList(PcbPtr queue) ;
 #endif
