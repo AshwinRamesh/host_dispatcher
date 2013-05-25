@@ -25,7 +25,7 @@ PcbPtr read_file(FILE *file) {
 		/* Error in the file input */
 		if (arg_count != 8) {
 			printf("%s\n", "Error: File format is incorrect.");
-			return pcb_free_memory(process_queue_head); // returns NULL
+			return pcb_free_all(process_queue_head); // returns NULL
 		}
 		printf("%s %d\n", "Creating pcb with arrival time",arrival_time); // remove later
 		temp_pcb = pcb_create(arrival_time,priority,processor_time,mbytes,num_printers,num_scanners,num_modems,num_cds);

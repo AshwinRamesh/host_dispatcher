@@ -3,9 +3,12 @@
 #include "../inc/dispatcher.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
-#include <errno.h>
 #include <signal.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <time.h>
 
 
 int main(int argc, char const *argv[]){
@@ -32,7 +35,7 @@ int main(int argc, char const *argv[]){
 		return EXIT_FAILURE;
 	}
 	/* TODO */
-
-	pcb_free_memory(process_queue);
+	dispatcher(process_queue);
+	pcb_free_all(process_queue);
 	return 0;
 }
