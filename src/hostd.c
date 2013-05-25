@@ -1,6 +1,6 @@
 #include "../inc/pcb.h"
 #include "../inc/readinput.h"
-
+#include "../inc/dispatcher.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -24,6 +24,7 @@ int main(int argc, char const *argv[]){
 	}
 
 	/* Get process queue */
+	printf("%s\n", "being reading file");
 	process_queue = read_file(file);
 	fclose(file);
 	file = NULL;
@@ -31,5 +32,7 @@ int main(int argc, char const *argv[]){
 		return EXIT_FAILURE;
 	}
 	/* TODO */
+
+	pcb_free_memory(process_queue);
 	return 0;
 }
