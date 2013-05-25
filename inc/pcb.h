@@ -1,6 +1,8 @@
 #ifndef PCB_H_
 #define PCB_H_
 
+#include <unistd.h>
+
 #define MAX_ARGS	3
 #define MAX_INPUT_SIZE 1024
 #define PROCESS_NAME "./sigtrap"
@@ -34,5 +36,5 @@ typedef Pcb * PcbPtr;
 PcbPtr pcb_queue();
 PcbPtr pcb_enqueue();
 PcbPtr pcb_create(int arrival_time, int priority, int processor_time, int mbytes, int num_printers, int num_scanners, int num_modems, int num_cds);
-
+PcbPtr pcb_free_memory(PcbPtr pcb_head);
 #endif

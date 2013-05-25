@@ -7,12 +7,12 @@
 #include <signal.h>
 
 PcbPtr pcb_queue(){
-	pcb * newPCB;
+	Pcb * newPCB;
 	return newPCB;
 }
 
 PcbPtr pcb_enqueue(){
-	pcb * newPCB;
+	Pcb * newPCB;
 	return newPCB;
 }
 
@@ -41,4 +41,20 @@ PcbPtr pcb_create(int arrival_time, int priority, int processor_time, int mbytes
 	temp_pcb->next = NULL;
 
 	return temp_pcb;
+}
+
+/* Free all memory in the pcb linked list. Returns NULL */
+void pcb_free_memory(PcbPtr pcb_head) {
+	if (pcb_head == NULL) {
+		return pcb_head;
+	}
+	PcbPtr pcb_temp;
+	while (1) {
+		pcb_temp = pcb_head->next;
+		free(pcb_head);
+		if (pcb_temp == NULL) {
+			return pcb_temp;
+		}
+		pcb_head = pcb_temp;
+	}
 }

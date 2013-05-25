@@ -12,7 +12,7 @@ int main(int argc, char const *argv[]){
 
 	/*Initialise Variables*/
 	FILE *file; // input file
-	process_queue = NULL; // the pcb queue
+	PcbPtr process_queue; // the pcb queue
 
 	if (argc != 2) {
 		printf("%s\n", "Usage: hostd <filename>");
@@ -27,7 +27,9 @@ int main(int argc, char const *argv[]){
 	process_queue = read_file(file);
 	fclose(file);
 	file = NULL;
-
+	if (process_queue == NULL) { // error in reading
+		return EXIT_FAILURE;
+	}
 	/* TODO */
 	return 0;
 }
