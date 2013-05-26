@@ -52,5 +52,6 @@ void pcb_free(PcbPtr process);
 PcbPtr pcb_free_all(PcbPtr pcb_head);
 PcbPtr pcb_start(PcbPtr process);
 PcbPtr pcb_terminate(PcbPtr process);
+PcbPtr pcb_suspend(PcbPtr process);
 void pcb_printList(PcbPtr queue) ;
 #endif

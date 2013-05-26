@@ -129,21 +129,35 @@ PcbPtr pcb_free_all(PcbPtr pcb_head) {
 
 PcbPtr pcb_start(PcbPtr process) {
 	//printf("Starting Process: %d\n", process->id);
-	process->status = RUNNING;
-	switch(process->pid = fork()) {
-		case -1:
-			printf("%s\n", "Error starting process");
-			return NULL;
-			break;
-		case 0:
-			process->status = RUNNING;
-			//printf(" ARGS: %s\n", process->args[1]);
-			execvp(process->args[0],process->args);
-			break;
-		default:
-			break;
+	if (process->status == WAITING) { // process is currently waiting
+		process->status = RUNNING;
+		switch(process->pid = fork()) {
+			case -1:
+				printf("%s\n", "Error starting process");
+				return NULL;
+				break;
+			case 0:
+				process->status = RUNNING;
+				//printf(" ARGS: %s\n", process->args[1]);
+				execvp(process->args[0],process->args);
+				break;
+			default:
+				break;
+		}
+		return process;
 	}
-	return process;
+	else if (process->status == SUSPENDED) { // process is currently suspended
+		if (kill(process->pid, SIGCONT)) {
+       			fprintf(stderr, "Restart of process:%dfailed\n",process->id);
+        			return NULL;
+    		}
+		process->status = RUNNING;
+		return process;
+	}
+	else {
+		fprintf(stderr, "An error occured during start. proccess: %d has status %s\n", process->id,process->status);
+	}
+	return NULL; // null if error
 }
 
 PcbPtr pcb_terminate(PcbPtr process) {
@@ -154,6 +168,16 @@ PcbPtr pcb_terminate(PcbPtr process) {
 	//printf("Terminating ID: %d\n", process->id);
 	int status;
 	process->status = STOPPED;
+	waitpid(process->pid,&status,WUNTRACED);
+	return process;
+}
+
+PcbPtr pcb_suspend(PcbPtr process) {
+	if(kill(process->pid,SIGTSTP)) {
+		fprintf(stderr, "Suspending Process:%d failed\n",process->id );
+	}
+	int status;
+	process->status = SUSPENDED;
 	waitpid(process->pid,&status,WUNTRACED);
 	return process;
 }
