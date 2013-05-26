@@ -4,8 +4,11 @@
 #include "../inc/dispatcher.h"
 
 int clock_time;
-PcbPtr input_queue = NULL;
-PcbPtr rr_queue = NULL;
+PcbPtr input_queue = NULL; // queue from reading file
+PcbPtr p1_queue = NULL;
+PcbPtr p2_queue = NULL;
+PcbPtr p3_queue = NULL;
+
 PcbPtr current_process = NULL;
 
 PcbPtr running_processes() {
@@ -21,19 +24,44 @@ PcbPtr running_processes() {
 		}
 		else { // suspend and enqueue process back to roundrobin
 			current_process = pcb_suspend(current_process);
-			rr_queue = pcb_enqueue(rr_queue,current_process);
+			if (current_process-> priority < 3){ // reduce priority
+				current_process->priority = current_process->priority +1 ;
+			}
+			switch (current_process->priority) {
+				case 1:
+					p1_queue = pcb_enqueue(p1_queue,current_process);
+					break;
+				case 2:
+					p2_queue = pcb_enqueue(p2_queue,current_process);
+					break;
+				case 3:
+					p3_queue = pcb_enqueue(p3_queue,current_process);
+					break;
+				default:
+					fprintf(stderr, "Error. Priority is out of bounds\n");
+			}
 			current_process = NULL;
 		}
 	}
 	return current_process;
 }
 
-/* Start next process in rr_queue. return current process */
+/* Start next process in p*_queue. return current process */
 PcbPtr start_process() {
 	//printf("Process: %d Status: %d Time:%d\n", queue->id,queue->status,queue->remaining_cpu_time);
-	if (current_process == NULL && rr_queue) {
-		current_process = pcb_dequeue(&rr_queue);
-		////pcb_printList(rr_queue);
+	if (current_process == NULL && (p1_queue || p2_queue || p3_queue)) {
+		if (p3_queue) {
+			current_process = pcb_dequeue(&p1_queue);
+		}
+		else if (p2_queue) {
+			current_process = pcb_dequeue(&p2_queue);
+		}
+		else if (p1_queue) {
+			current_process = pcb_dequeue(&p3_queue);
+		}
+		else {
+			fprintf(stderr, "Error. Priority Queues all null\n");
+		}
 		pcb_start(current_process);
 		return current_process;
 	}
@@ -45,8 +73,7 @@ void enqueue_roundrobin() {
 	PcbPtr process;
 	while(input_queue && input_queue->arrival_time <= clock_time) {
 		process = pcb_dequeue(&input_queue);
-		rr_queue = pcb_enqueue(rr_queue,process);
-		//pcb_printList(rr_queue);
+		p1_queue = pcb_enqueue(p1_queue,process);
 	}
 }
 
@@ -54,7 +81,7 @@ void dispatcher(PcbPtr queue) {
 	clock_time = 0;
 	input_queue = queue;
 	//pcb_printList(queue);
-	while (input_queue || rr_queue || current_process) {
+	while (input_queue || current_process || p1_queue || p2_queue || p3_queue) {
 		//printf("\nClock Time: %d\n", clock_time);
 		enqueue_roundrobin(); // add items to round robin
 		current_process = running_processes(); //check running process and decrement time / suspend
