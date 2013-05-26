@@ -25,15 +25,12 @@ PcbPtr pcb_dequeue(PcbPtr *head){
 		fprintf(stderr, "Head is null. Cannot Dequeue.\n");
 		return NULL;
 	}
-	printf("Current Head %d\n", (*head)->id);
+	//printf("Current Head %d\n", (*head)->id);
 	PcbPtr temp_pcb = *head;
 	*head = (*head)->next;
 	if ((*head) != NULL) {
 		(*head)->prev = NULL; // new head will have null before
-		printf("Current Head %d\n", (*head)->id);
-	}
-	else {
-		printf("Head is null in deque\n");
+		//printf("Current Head %d\n", (*head)->id);
 	}
 	temp_pcb->next = NULL;
 	temp_pcb->prev = NULL;
@@ -124,7 +121,7 @@ PcbPtr pcb_free_all(PcbPtr pcb_head) {
 
 PcbPtr pcb_start(PcbPtr process) {
 	if (process->status == WAITING) { // process is currently waiting
-		printf("Starting Process: %d\n", process->id);
+		//printf("Starting Process: %d\n", process->id);
 		process->status = RUNNING;
 		switch(process->pid = fork()) {
 			case -1:
@@ -142,7 +139,7 @@ PcbPtr pcb_start(PcbPtr process) {
 		return process;
 	}
 	else if (process->status == SUSPENDED) { // process is currently suspended
-		printf("Restarting Process: %d\n", process->id);
+		//printf("Restarting Process: %d\n", process->id);
 		if (kill(process->pid, SIGCONT)) {
        			fprintf(stderr, "Restart of process:%dfailed\n",process->id);
         			return NULL;
@@ -157,7 +154,6 @@ PcbPtr pcb_start(PcbPtr process) {
 }
 
 PcbPtr pcb_terminate(PcbPtr process) {
-	printf("Terminating !!!!! HELLO\n");
 	if(kill(process->pid,SIGINT) != 0) { // error
 		fprintf(stderr, "Termination failed for pid: %d\n", process->pid);
 		return NULL;
@@ -170,11 +166,10 @@ PcbPtr pcb_terminate(PcbPtr process) {
 }
 
 PcbPtr pcb_suspend(PcbPtr process) {
-	printf("Suspending Process %d\n",process->id );
+	//printf("Suspending Process %d\n",process->id );
 	if(kill(process->pid,SIGTSTP)) {
 		fprintf(stderr, "Suspending Process:%d failed\n",process->id );
 	}
-	printf("attempting suspend\n");
 	int status;
 	process->status = SUSPENDED;
 	waitpid(process->pid,&status,WUNTRACED);
