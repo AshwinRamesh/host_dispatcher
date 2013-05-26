@@ -21,6 +21,7 @@ PcbPtr pcb_get_tail(PcbPtr head) {
 
 /* Remove pcb in queue and return it */
 PcbPtr pcb_dequeue(PcbPtr *head){
+	//printf("Head ID: %d\n", (*head)->id);
 	if((*head) == NULL) {
 		fprintf(stderr, "Head is null. Cannot Dequeue.\n");
 		return NULL;
@@ -207,6 +208,26 @@ void pcb_printList(PcbPtr queue) {
 		printf("Current Process: %d Prev Process: %d\n",queue->id,temp );
 		last = queue;
 		queue = queue->prev;
+	}
+	printf("%s\n", "Finished Testing");
+}
+
+/* Function to check if the linked list is correct */
+void pcb_printList_forward(PcbPtr queue) {
+	if (queue == NULL) {
+		printf("\n%s\n", "QUEUE IS NULL");
+	}
+	int temp;
+	printf("%s\n", "Testing Forwards:");
+	while (queue != NULL) {
+		if (queue->next == NULL) {
+			temp = 8888;
+		}
+		else {
+			temp = queue->next->id;
+		}
+		printf("Current Process: %d Next Process: %d\n",queue->id,temp );
+		queue = queue->next;
 	}
 	printf("%s\n", "Finished Testing");
 }

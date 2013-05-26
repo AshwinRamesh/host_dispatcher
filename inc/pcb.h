@@ -54,4 +54,5 @@ PcbPtr pcb_start(PcbPtr process);
 PcbPtr pcb_terminate(PcbPtr process);
 PcbPtr pcb_suspend(PcbPtr process);
 void pcb_printList(PcbPtr queue) ;
+void pcb_printList_forward(PcbPtr queue);
 #endif
