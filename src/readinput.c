@@ -27,11 +27,11 @@ PcbPtr read_file(FILE *file) {
 			printf("%s\n", "Error: File format is incorrect.");
 			return pcb_free_all(process_queue_head); // returns NULL
 		}
-		printf("%s %d\n", "Creating pcb with arrival time",arrival_time); // remove later
+		//printf("%s %d\n", "Creating pcb with arrival time",arrival_time); // remove later
 		temp_pcb = pcb_create(arrival_time,priority,processor_time,mbytes,num_printers,num_scanners,num_modems,num_cds);
 
 		//TODO - other checks for process / real time etc.
-		printf("%d\n", arrival_time);
+		//printf("%d\n", arrival_time);
 		if (process_queue_head == NULL){
 			process_queue_head = pcb_enqueue(process_queue_head,temp_pcb);
 		}

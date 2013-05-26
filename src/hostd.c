@@ -35,7 +35,8 @@ int main(int argc, char const *argv[]){
 		return EXIT_FAILURE;
 	}
 	/* TODO */
-	pcb_printList(process_queue);
+	//pcb_printList(process_queue);
+	printf("Begin Dispatcher\n");
 	dispatcher(process_queue);
 	return 0;
 }

@@ -20,37 +20,29 @@ PcbPtr pcb_get_tail(PcbPtr head) {
 }
 
 /* Remove pcb in queue and return it */
-PcbPtr pcb_dequeue(PcbPtr *queue_head,PcbPtr *node){
-	if((*node) == NULL) {
-		return NULL; // no more processes left
+PcbPtr pcb_dequeue(PcbPtr *head){
+	if((*head) == NULL) {
+		fprintf(stderr, "Head is null. Cannot Dequeue.\n");
+		return NULL;
 	}
-	PcbPtr temp_pcb = *node;
-	PcbPtr new_node = (*node)->next;
-	if (new_node == NULL && (*node)->prev == NULL) { // last node in queue
-		//printf("%s\n", "new head is null");
-		*queue_head = NULL;
-		return *node;
+	printf("Current Head %d\n", (*head)->id);
+	PcbPtr temp_pcb = *head;
+	*head = (*head)->next;
+	if ((*head) != NULL) {
+		(*head)->prev = NULL; // new head will have null before
+		printf("Current Head %d\n", (*head)->id);
 	}
-	if (temp_pcb->prev != NULL && temp_pcb->next != NULL) { //  inner node (neither head or tail)
-		//printf("%s\n", "inner node");
-		new_node->prev = temp_pcb->prev;
+	else {
+		printf("Head is null in deque\n");
 	}
-	else if (temp_pcb->prev == NULL) { // head node
-		//printf("%s\n", "head node");
-		new_node->prev = NULL;
-		*queue_head =new_node; // reset the queue head
-	}
-	else { // tail node
-		//printf("%s\n", "tail node");
-		temp_pcb->prev->next = NULL;
-	}
-	temp_pcb->prev = NULL;
 	temp_pcb->next = NULL;
+	temp_pcb->prev = NULL;
 	return temp_pcb;
 }
 
 /*Similar to pcb_enqueue, except tail of queue is given instead of head */
 PcbPtr pcb_enqueue_tail(PcbPtr tail, PcbPtr child) {
+	child->next = NULL;
 	tail->next = child;
 	child->prev = tail;
 	return child; // returns new tail
@@ -59,6 +51,9 @@ PcbPtr pcb_enqueue_tail(PcbPtr tail, PcbPtr child) {
 /* link new pcb to end of queue. Params: head of queue, new pcb*/
 PcbPtr pcb_enqueue(PcbPtr head, PcbPtr child){
 	if (head == NULL) {
+		//printf("%s\n", "head is null for enqueue");
+		child->next = NULL;
+		child->prev = NULL;
 		head = child;
 	}
 	else if (head->next == NULL) {
@@ -128,8 +123,8 @@ PcbPtr pcb_free_all(PcbPtr pcb_head) {
 }
 
 PcbPtr pcb_start(PcbPtr process) {
-	//printf("Starting Process: %d\n", process->id);
 	if (process->status == WAITING) { // process is currently waiting
+		printf("Starting Process: %d\n", process->id);
 		process->status = RUNNING;
 		switch(process->pid = fork()) {
 			case -1:
@@ -147,6 +142,7 @@ PcbPtr pcb_start(PcbPtr process) {
 		return process;
 	}
 	else if (process->status == SUSPENDED) { // process is currently suspended
+		printf("Restarting Process: %d\n", process->id);
 		if (kill(process->pid, SIGCONT)) {
        			fprintf(stderr, "Restart of process:%dfailed\n",process->id);
         			return NULL;
@@ -155,12 +151,13 @@ PcbPtr pcb_start(PcbPtr process) {
 		return process;
 	}
 	else {
-		fprintf(stderr, "An error occured during start. proccess: %d has status %s\n", process->id,process->status);
+		fprintf(stderr, "An error occured during start. proccess: %d has status %d\n", process->id,process->status);
 	}
 	return NULL; // null if error
 }
 
 PcbPtr pcb_terminate(PcbPtr process) {
+	printf("Terminating !!!!! HELLO\n");
 	if(kill(process->pid,SIGINT) != 0) { // error
 		fprintf(stderr, "Termination failed for pid: %d\n", process->pid);
 		return NULL;
@@ -173,9 +170,11 @@ PcbPtr pcb_terminate(PcbPtr process) {
 }
 
 PcbPtr pcb_suspend(PcbPtr process) {
+	printf("Suspending Process %d\n",process->id );
 	if(kill(process->pid,SIGTSTP)) {
 		fprintf(stderr, "Suspending Process:%d failed\n",process->id );
 	}
+	printf("attempting suspend\n");
 	int status;
 	process->status = SUSPENDED;
 	waitpid(process->pid,&status,WUNTRACED);
@@ -184,6 +183,9 @@ PcbPtr pcb_suspend(PcbPtr process) {
 
 /* Function to check if the linked list is correct */
 void pcb_printList(PcbPtr queue) {
+	if (queue == NULL) {
+		printf("\n%s\n", "QUEUE IS NULL");
+	}
 	PcbPtr last;
 	int temp;
 	printf("%s\n", "Testing Forwards:");
