@@ -50,11 +50,7 @@ PcbPtr running_processes() {
 
 /* Start next process in p*_queue. return current process */
 PcbPtr start_process() {
-	//printf("Process: %d Status: %d Time:%d\n", queue->id,queue->status,queue->remaining_cpu_time);
-	if (current_process == NULL && (user_queue || p1_queue || p2_queue || p3_queue)) {
-		if (user_queue) { //TODO:: also check if memory can be allocated
-			while
-		}
+	if (current_process == NULL && (p1_queue || p2_queue || p3_queue)) {
 		if (p1_queue) {
 			current_process = pcb_dequeue(&p1_queue);
 		}
@@ -79,7 +75,7 @@ void enqueue_roundrobin() {
 	while (user_queue) { //TODO:: check if memory can be allocated here
 		process = pcb_dequeue(&user_queue);
 		process->priority = 1;
-		p1_queue = pcb_enqueue(p1_queue,process)
+		p1_queue = pcb_enqueue(p1_queue,process);
 	}
 }
 
