@@ -8,5 +8,6 @@ PcbPtr running_processes();
 PcbPtr start_process();
 void enqueue_roundrobin();
 void dispatcher(PcbPtr queue);
+void enqueue_userqueue();
 
 #endif
