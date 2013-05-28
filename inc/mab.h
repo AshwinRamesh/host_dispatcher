@@ -1,6 +1,9 @@
 #ifndef MAB_H
 #define MAB_H
 
+#define ALLOCATED_TRUE		1
+#define ALLOCATED_FALSE		0
+
 struct mab {
 	int offset;
 	int size;

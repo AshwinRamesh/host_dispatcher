@@ -8,10 +8,10 @@
 #define PROCESS_NAME "./sigtrap"
 
 /* List of Status for PCB */
-#define RUNNING	1
-#define WAITING	2
+#define RUNNING		1
+#define WAITING		2
 #define SUSPENDED	3
-#define STOPPED	4
+#define STOPPED		4
 #define ERROR		-1
 #define OTHER		0
 

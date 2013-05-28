@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "../inc/dispatcher.h"
+#include "../inc/mab.h"
 
 int clock_time;
 PcbPtr input_queue = NULL; // queue from reading file
@@ -83,6 +84,7 @@ void enqueue_roundrobin() {
 void enqueue_userqueue(){
 	PcbPtr process;
 	while(input_queue && input_queue->arrival_time <= clock_time) {
+		printf("Enqueue from input\n");
 		process = pcb_dequeue(&input_queue);
 		user_queue = pcb_enqueue(user_queue,process);
 		//pcb_printList_forward(p1_queue);
