@@ -3,8 +3,10 @@
 #include <unistd.h>
 #include "../inc/dispatcher.h"
 #include "../inc/mab.h"
+#include "../inc/resources.h"
 
 int clock_time;
+
 PcbPtr input_queue = NULL; // queue from reading file
 PcbPtr realtime_queue = NULL; // real time queue
 PcbPtr user_queue = NULL; // user job queue;
@@ -13,7 +15,9 @@ PcbPtr p1_queue = NULL;
 PcbPtr p2_queue = NULL;
 PcbPtr p3_queue = NULL;
 
-PcbPtr current_process = NULL;
+PcbPtr current_process = NULL; // current process pointer
+
+RsrcPtr io_resources = NULL; // resources for the dispatcher.
 
 PcbPtr running_processes() {
 	//printf("Process %d is running with Time: %d\n", queue->id,queue->remaining_cpu_time);
@@ -22,6 +26,10 @@ PcbPtr running_processes() {
 		current_process->remaining_cpu_time = current_process->remaining_cpu_time -1;
 		if (current_process->remaining_cpu_time <= 0) { // processing time is completed
 			pcb_terminate(current_process);
+			// free resources
+			if (current_process->priority > 0) { // not real time
+				io_resources = free_resource(io_resources,current_process);
+			}
 			//TODO:: FREE MAB HERE
 			pcb_free(current_process);
 			current_process = NULL;
@@ -82,21 +90,24 @@ void enqueue_roundrobin() {
 	PcbPtr process;
 	while (user_queue) { //TODO:: check if memory can be allocated here
 		process = pcb_dequeue(&user_queue);
-		switch (process->priority) {
-			case 0:
-				break;
-			case 1:
-				p1_queue = pcb_enqueue(p1_queue,process);
-				break;
-			case 2:
-				p2_queue = pcb_enqueue(p2_queue,process);
-				break;
-			case 3:
-				p3_queue = pcb_enqueue(p3_queue,process);
-				break;
-			default:
-				fprintf(stderr, "Error. Priority not correctly set. Process ID: %d Priority: %d\n",process->id,process->priority);
-				break;
+		if (check_resource(io_resources,process) == 1){ // if resources can be allocated for the given process
+			io_resource = allocate_resource(io_resources,process);
+			switch (process->priority) {
+				case 0:
+					break;
+				case 1:
+					p1_queue = pcb_enqueue(p1_queue,process);
+					break;
+				case 2:
+					p2_queue = pcb_enqueue(p2_queue,process);
+					break;
+				case 3:
+					p3_queue = pcb_enqueue(p3_queue,process);
+					break;
+				default:
+					fprintf(stderr, "Error. Priority not correctly set. Process ID: %d Priority: %d\n",process->id,process->priority);
+					break;
+			}
 		}
 	}
 }
@@ -120,6 +131,7 @@ void dispatcher(PcbPtr queue) {
 	clock_time = 0;
 	input_queue = queue;
 	pcb_printList(queue);
+	io_resources = create_resource(PRINTERS,SCANNERS,MODEMS,CDS);
 	while (input_queue || user_queue || realtime_queue || current_process || p1_queue || p2_queue || p3_queue) {
 		//printf("\nClock Time: %d\n", clock_time);
 		enqueue_user_real_queues(); // add items to user queue and real time queue
@@ -129,5 +141,6 @@ void dispatcher(PcbPtr queue) {
 		sleep(1);
 		clock_time = clock_time+1;
 	}
+	destroy_resources(io_resources); // free memory for resources
 	//printf("%s\n", "dispatcher complete");
 }
