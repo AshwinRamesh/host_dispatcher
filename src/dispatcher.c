@@ -18,6 +18,7 @@ PcbPtr current_process = NULL;
 PcbPtr running_processes() {
 	//printf("Process %d is running with Time: %d\n", queue->id,queue->remaining_cpu_time);
 	if (current_process) { // if there is a process running
+		printf("At clock: %d Process Running: %d\n", clock_time,current_process->id);
 		current_process->remaining_cpu_time = current_process->remaining_cpu_time -1;
 		if (current_process->remaining_cpu_time <= 0) { // processing time is completed
 			pcb_terminate(current_process);
@@ -25,9 +26,12 @@ PcbPtr running_processes() {
 			pcb_free(current_process);
 			current_process = NULL;
 		}
-		else if (p1_queue || p2_queue || p3_queue){ // suspend and enqueue process back to roundrobin if other waiting processes
+		else if (realtime_queue || p1_queue || p2_queue || p3_queue){ // suspend and enqueue process back to roundrobin if other waiting processes
+			if (current_process->priority == 0) { //real time process
+				return current_process;
+			}
 			current_process = pcb_suspend(current_process);
-			if (current_process-> priority < 3){ // reduce priority
+			if (current_process-> priority < 3 && current_process->priority != 0){ // reduce priority
 				current_process->priority = current_process->priority +1 ;
 			}
 			switch (current_process->priority) {
@@ -51,8 +55,11 @@ PcbPtr running_processes() {
 
 /* Start next process in p*_queue. return current process */
 PcbPtr start_process() {
-	if (current_process == NULL && (p1_queue || p2_queue || p3_queue)) {
-		if (p1_queue) {
+	if (current_process == NULL && (realtime_queue || p1_queue || p2_queue || p3_queue)) {
+		if (realtime_queue) {
+			current_process = pcb_dequeue(&realtime_queue);
+		}
+		else if (p1_queue) {
 			current_process = pcb_dequeue(&p1_queue);
 		}
 		else if (p2_queue) {
@@ -75,19 +82,37 @@ void enqueue_roundrobin() {
 	PcbPtr process;
 	while (user_queue) { //TODO:: check if memory can be allocated here
 		process = pcb_dequeue(&user_queue);
-		process->priority = 1;
-		p1_queue = pcb_enqueue(p1_queue,process);
+		switch (process->priority) {
+			case 0:
+				break;
+			case 1:
+				p1_queue = pcb_enqueue(p1_queue,process);
+				break;
+			case 2:
+				p2_queue = pcb_enqueue(p2_queue,process);
+				break;
+			case 3:
+				p3_queue = pcb_enqueue(p3_queue,process);
+				break;
+			default:
+				fprintf(stderr, "Error. Priority not correctly set. Process ID: %d Priority: %d\n",process->id,process->priority);
+				break;
+		}
 	}
 }
 
 /* Move input->head of queue to user queue */
-void enqueue_userqueue(){
+void enqueue_user_real_queues(){
 	PcbPtr process;
 	while(input_queue && input_queue->arrival_time <= clock_time) {
-		printf("Enqueue from input\n");
+		//printf("Enqueue from input\n");
 		process = pcb_dequeue(&input_queue);
-		user_queue = pcb_enqueue(user_queue,process);
-		//pcb_printList_forward(p1_queue);
+		if (process->priority == 0) { // real time queue
+			realtime_queue = pcb_enqueue(realtime_queue,process);
+		}
+		else {
+			user_queue = pcb_enqueue(user_queue,process);
+		}
 	}
 }
 
@@ -97,7 +122,7 @@ void dispatcher(PcbPtr queue) {
 	pcb_printList(queue);
 	while (input_queue || user_queue || realtime_queue || current_process || p1_queue || p2_queue || p3_queue) {
 		//printf("\nClock Time: %d\n", clock_time);
-		enqueue_userqueue(); // add items to user queue
+		enqueue_user_real_queues(); // add items to user queue and real time queue
 		enqueue_roundrobin(); // add items to feedback queues if memory can be allocated
 		current_process = running_processes(); //check running process and decrement time / suspend
 		start_process(); // start next process in RR queue
