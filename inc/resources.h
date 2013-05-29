@@ -14,7 +14,8 @@ struct resource {
 	int cds;
 };
 
-typedef resource * RsrcPtr;
+typedef struct resource Rsrc;
+typedef struct resource * RsrcPtr;
 
 RsrcPtr create_resource(int printers, int scanners, int modems, int cds);
 RsrcPtr allocate_resource(RsrcPtr io, PcbPtr ps);

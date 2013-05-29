@@ -91,7 +91,7 @@ void enqueue_roundrobin() {
 	while (user_queue) { //TODO:: check if memory can be allocated here
 		process = pcb_dequeue(&user_queue);
 		if (check_resource(io_resources,process) == 1){ // if resources can be allocated for the given process
-			io_resource = allocate_resource(io_resources,process);
+			io_resources = allocate_resource(io_resources,process);
 			switch (process->priority) {
 				case 0:
 					break;
@@ -141,6 +141,6 @@ void dispatcher(PcbPtr queue) {
 		sleep(1);
 		clock_time = clock_time+1;
 	}
-	destroy_resources(io_resources); // free memory for resources
+	destroy_resource(io_resources); // free memory for resources
 	//printf("%s\n", "dispatcher complete");
 }

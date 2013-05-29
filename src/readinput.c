@@ -1,4 +1,5 @@
 #include "../inc/pcb.h"
+#include "../inc/resources.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -27,19 +28,25 @@ PcbPtr read_file(FILE *file) {
 			printf("%s\n", "Error: File format is incorrect.");
 			return pcb_free_all(process_queue_head); // returns NULL
 		}
-		//printf("%s %d\n", "Creating pcb with arrival time",arrival_time); // remove later
-		temp_pcb = pcb_create(arrival_time,priority,processor_time,mbytes,num_printers,num_scanners,num_modems,num_cds);
-
-		//TODO - other checks for process / real time etc.
-		//printf("%d\n", arrival_time);
-		if (process_queue_head == NULL){
-			process_queue_head = pcb_enqueue(process_queue_head,temp_pcb);
+		/* Checks to see that input is correct with format of dispatcher */
+		int correct_input = 0;
+		if (priority == 0 && num_printers == 0 && num_scanners == 0 && num_modems == 0 && num_cds == 0) { // ensuring real time has no IO
+			correct_input = 1;
 		}
-		else if (process_queue_tail == NULL) {
-			process_queue_tail = pcb_enqueue(process_queue_head,temp_pcb)->next;
+		if ( correct_input == 1 || (priority > 0 && priority <= 3 && num_printers <= PRINTERS && num_scanners <= SCANNERS && num_modems <= MODEMS && num_cds <= CDS)) { //ensuring user ps doesnt have too many IOs
+			temp_pcb = pcb_create(arrival_time,priority,processor_time,mbytes,num_printers,num_scanners,num_modems,num_cds);
+			if (process_queue_head == NULL){
+				process_queue_head = pcb_enqueue(process_queue_head,temp_pcb);
+			}
+			else if (process_queue_tail == NULL) {
+				process_queue_tail = pcb_enqueue(process_queue_head,temp_pcb)->next;
+			}
+			else {
+				process_queue_tail = pcb_enqueue_tail(process_queue_tail,temp_pcb);
+			}
 		}
-		else {
-			process_queue_tail = pcb_enqueue_tail(process_queue_tail,temp_pcb);
+		else { // error in input row
+			fprintf(stderr, "Input line given has incorrect parameters and does not fit with the dispatcher specs. Ignoring line...\n");
 		}
 	}
 	return process_queue_head;

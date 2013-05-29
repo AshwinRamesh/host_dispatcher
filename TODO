@@ -2,3 +2,7 @@
 - make sure the input is correct - 0 = no resources etc.
 - error checking
 - make sure not too many resources defined in input
+
+
+- do Memory management
+-do checks if error then memory will be freed

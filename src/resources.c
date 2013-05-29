@@ -5,7 +5,7 @@
 
 /* Allocating memory for the resource pointer */
 RsrcPtr create_resource(int printers, int scanners, int modems, int cds){
-	RsrcPtr temp_resource = (RsrcPtr)malloc(sizeof(resource));
+	RsrcPtr temp_resource = (RsrcPtr)malloc(sizeof(Rsrc));
 	temp_resource->printers = printers;
 	temp_resource->scanners = scanners;
 	temp_resource->modems = modems;
