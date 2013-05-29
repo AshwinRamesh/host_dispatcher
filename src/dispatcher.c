@@ -19,10 +19,19 @@ PcbPtr current_process = NULL; // current process pointer
 
 RsrcPtr io_resources = NULL; // resources for the dispatcher.
 
+void print_queues() {
+	printf("Printing INPUT QUEUE\n"); 	pcb_printList_forward(input_queue);
+	printf("Printing USER QUEUE\n");		pcb_printList_forward(user_queue);
+	printf("Printing REAL TIME QUEUE \n");	pcb_printList_forward(realtime_queue);
+	printf("Printing P1 QUEUE\n");		pcb_printList_forward(p1_queue);
+	printf("Printing P2 QUEUE\n");		pcb_printList_forward(p2_queue);
+	printf("Printing P3 QUEUE\n");		pcb_printList_forward(p3_queue);
+}
+
 PcbPtr running_processes() {
 	//printf("Process %d is running with Time: %d\n", queue->id,queue->remaining_cpu_time);
 	if (current_process) { // if there is a process running
-		printf("At clock: %d Process Running: %d\n", clock_time,current_process->id);
+		//printf("At clock: %d Process Running: %d with Seconds Remaining: %d -> %d\n", clock_time,current_process->id,current_process->remaining_cpu_time, current_process->remaining_cpu_time-1);
 		current_process->remaining_cpu_time = current_process->remaining_cpu_time -1;
 		if (current_process->remaining_cpu_time <= 0) { // processing time is completed
 			pcb_terminate(current_process);
@@ -32,6 +41,7 @@ PcbPtr running_processes() {
 			}
 			//TODO:: FREE MAB HERE
 			pcb_free(current_process);
+			//print_queues();
 			current_process = NULL;
 		}
 		else if (realtime_queue || p1_queue || p2_queue || p3_queue){ // suspend and enqueue process back to roundrobin if other waiting processes
@@ -89,8 +99,8 @@ PcbPtr start_process() {
 void enqueue_roundrobin() {
 	PcbPtr process;
 	while (user_queue) { //TODO:: check if memory can be allocated here
-		process = pcb_dequeue(&user_queue);
-		if (check_resource(io_resources,process) == 1){ // if resources can be allocated for the given process
+		if (check_resource(io_resources,user_queue) == 1){ // if resources can be allocated for the given process
+			process = pcb_dequeue(&user_queue);
 			io_resources = allocate_resource(io_resources,process);
 			switch (process->priority) {
 				case 0:
@@ -109,6 +119,10 @@ void enqueue_roundrobin() {
 					break;
 			}
 		}
+		else {
+			//printf(" %d resources cannot be allocated for Process %d\n",user_queue->arrival_time, user_queue->id);
+			break;
+		}
 	}
 }
 
@@ -116,7 +130,7 @@ void enqueue_roundrobin() {
 void enqueue_user_real_queues(){
 	PcbPtr process;
 	while(input_queue && input_queue->arrival_time <= clock_time) {
-		//printf("Enqueue from input\n");
+		//printf("Enqueue from input id: %d arrival %d clock %d\n",input_queue->id,input_queue->arrival_time,clock_time);
 		process = pcb_dequeue(&input_queue);
 		if (process->priority == 0) { // real time queue
 			realtime_queue = pcb_enqueue(realtime_queue,process);
@@ -133,7 +147,7 @@ void dispatcher(PcbPtr queue) {
 	pcb_printList(queue);
 	io_resources = create_resource(PRINTERS,SCANNERS,MODEMS,CDS);
 	while (input_queue || user_queue || realtime_queue || current_process || p1_queue || p2_queue || p3_queue) {
-		//printf("\nClock Time: %d\n", clock_time);
+		//printf("CLOCK TIME : %d \n .================.\n", clock_time);
 		enqueue_user_real_queues(); // add items to user queue and real time queue
 		enqueue_roundrobin(); // add items to feedback queues if memory can be allocated
 		current_process = running_processes(); //check running process and decrement time / suspend
