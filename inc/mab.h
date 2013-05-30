@@ -8,6 +8,7 @@
 #define USER_TIME_MEMORY	960
 
 struct mab {
+	int id; // id of the process
 	int offset;
 	int size;
 	int allocated;
@@ -24,5 +25,7 @@ MabPtr memAlloc(MabPtr m, int size);
 MabPtr memFree(MabPtr m);
 MabPtr memMerge(MabPtr m);
 MabPtr memSplit(MabPtr m, int size);
+MabPtr memGetHead(MabPtr m);
+void memPrint(MabPtr m);
 
 #endif
