@@ -2,6 +2,8 @@
 #define PCB_H_
 
 #include <unistd.h>
+#include "../inc/mab.h"
+
 
 #define MAX_ARGS	3
 #define MAX_INPUT_SIZE 1024
@@ -21,6 +23,7 @@ struct pcb {
 	int id; // identifier
 	int status; // status of the process
 	char * args[MAX_ARGS]; // process args for exec
+	MabPtr memory; // pointer to memory address
 
 	/* List of items for process */
 	int arrival_time;
