@@ -12,21 +12,15 @@
 
 int main(int argc, char const *argv[]){
 	/*Initialise Variables*/
-	FILE *file; // input file
 	PcbPtr process_queue; // the pcb queue
 	/* Validating Program Arguments */
 	if (argc != 2) {
 		printf("%s\n", "Usage: hostd <filename>");
 		return EXIT_FAILURE;
 	}
-	else if (!(file = fopen(argv[1],"r"))) {
-		printf("%s\n", "File does not exist.");
-		return EXIT_FAILURE;
-	}
-	/* Get process queue */
-	process_queue = read_file(file);
-	fclose(file);
-	file = NULL;
+	char file_name[MAX_INPUT_SIZE];
+	strcpy(file_name,argv[1]);
+	process_queue = read_file(file_name);
 	if (process_queue == NULL) { // error in reading
 		return EXIT_FAILURE;
 	}

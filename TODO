@@ -4,6 +4,7 @@
 - do Memory management
 -do checks if error then memory will be freed
 - terminate after 20 sec
+- do we deallocate memory if there are no real time items?
 
 Testing:
 	General Testing:
@@ -12,11 +13,11 @@ Testing:
 		- Normal Testing
 
 	Testing Input File
-		- Too many lines of input
+		- Too many lines of input (WORKS)
 		- Too much memory allocation
 		- Too much resources
 		- Resource and Priority dont match
 		- Priority too much/little
-		- empty file
-		- no end of line
+		- empty file (WORKS)
 
+- bug only reading in first item??
