@@ -1,7 +1,5 @@
-- make sure the input is correct - 0 = no resources etc.
-- error checking
-- make sure not too many resources defined in input
--check for mem leaks
+- documentation
+- report
 
 Testing:
 	General Testing:

@@ -1,3 +1,5 @@
+/* Header for resources.c */
+
 #ifndef RESOURCES_H
 #define RESOURCES_H
 
@@ -7,6 +9,7 @@
 #define MODEMS 	1
 #define CDS 		2
 
+/* Resource struct */
 struct resource {
 	int printers;
 	int scanners;

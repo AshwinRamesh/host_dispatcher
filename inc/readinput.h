@@ -1,7 +1,9 @@
+/* Header for readinput.c */
+
 #ifndef READINPUT_H_
 #define READINPUT_H_
 
-#define MAX_INPUT_LINES 1000
+#define MAX_INPUT_LINES 1000	// maximum file size
 
 #include  "pcb.h"
 #include <stdio.h>

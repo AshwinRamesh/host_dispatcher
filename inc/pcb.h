@@ -1,12 +1,14 @@
+/* Header for pcb.c */
+
 #ifndef PCB_H_
 #define PCB_H_
 
 #include <unistd.h>
 #include "../inc/mab.h"
 
-#define MAX_ARGS	3
-#define MAX_INPUT_SIZE 1024
-#define PROCESS_NAME "./sigtrap"
+#define MAX_ARGS	3 		// max args for sigtrap
+#define MAX_INPUT_SIZE 1024		// maximum input line size
+#define PROCESS_NAME "./sigtrap"	// process name (fake process)
 
 /* List of Status for PCB */
 #define RUNNING		1
@@ -16,6 +18,7 @@
 #define ERROR		-1
 #define OTHER		0
 
+/* Process Struct */
 struct pcb {
 	//int id; // personal identifier
 	pid_t pid; // process id given by machine

@@ -1,12 +1,17 @@
+/* Header file for mab.c*/
+
 #ifndef MAB_H
 #define MAB_H
 
+/* Defining boolean values for allocated memory */
 #define ALLOCATED_TRUE		1
 #define ALLOCATED_FALSE		0
 
+/* maximum memory allocation for real time and user processes */
 #define REAL_TIME_MEMORY 	64
 #define USER_TIME_MEMORY	960
 
+/* memory struct. uses First Fit Allocation Algorithm*/
 struct mab {
 	int id; // id of the process
 	int offset;
