@@ -1,8 +1,22 @@
-- do priority check in input read
 - make sure the input is correct - 0 = no resources etc.
 - error checking
 - make sure not too many resources defined in input
-
-
 - do Memory management
 -do checks if error then memory will be freed
+- terminate after 20 sec
+
+Testing:
+	General Testing:
+		- No memory usage
+		- No resource usage
+		- Normal Testing
+
+	Testing Input File
+		- Too many lines of input
+		- Too much memory allocation
+		- Too much resources
+		- Resource and Priority dont match
+		- Priority too much/little
+		- empty file
+		- no end of line
+
