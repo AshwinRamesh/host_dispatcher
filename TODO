@@ -8,9 +8,9 @@
 
 Testing:
 	General Testing:
-		- No memory usage
-		- No resource usage
-		- Normal Testing
+		- No memory usage (FAILS)
+		- No resource usage (WORKS)
+		- Normal Testing (WORKS)
 
 	Testing Input File
 		- Too many lines of input (WORKS)
@@ -19,7 +19,7 @@ Testing:
 		- Too much memory allocation
 		- Too much resources
 		- Resource and Priority dont match
-		- Priority too much/little
+		- Priority too much/little (WORKS)
 		- empty file (WORKS)
 
 - bug only reading in first item??
