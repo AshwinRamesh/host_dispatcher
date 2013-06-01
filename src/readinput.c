@@ -89,7 +89,9 @@ PcbPtr read_file(char * file_name) {
 		printf("%s\n", "File does not exist. Exiting");
 		exit(1);
 	}
+	int line = 0;
 	while(fgets(buffer,sizeof(buffer),file) != NULL) {
+		line++;
 		int arg_count = sscanf(buffer,"%d, %d, %d, %d, %d, %d, %d, %d", &arrival_time, &priority, &processor_time, &mbytes, &num_printers, &num_scanners, &num_modems, &num_cds);
 		/* Error in the file input line itself*/
 		if (arg_count != 8) {
@@ -111,7 +113,7 @@ PcbPtr read_file(char * file_name) {
 			}
 		}
 		else { // error in input row
-			fprintf(stderr, "Input line given has incorrect parameters and does not fit with the dispatcher specs. Ignoring line...\n");
+			fprintf(stderr, "Input line [%d] is illegally formatted. Ignoring line...\n",line);
 		}
 	}
 	fclose(file);

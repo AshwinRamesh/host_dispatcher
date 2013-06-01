@@ -16,10 +16,9 @@ Testing:
 		- Too many lines of input (WORKS)
 		- Negative Memory (WORKS)
 		- Negative Resources (WORKS)
-		- Too much memory allocation
-		- Too much resources
-		- Resource and Priority dont match
+		- Too much memory allocation (WORKS)
+		- Too much resources (WORKS)
+		- Resource and Priority dont match (WORKS)
 		- Priority too much/little (WORKS)
 		- empty file (WORKS)
-
-- bug only reading in first item??
+		- negative arrival (WORKS)

@@ -92,7 +92,9 @@ void enqueue_roundrobin() {
 		if (check_resource(io_resources,user_queue) == 1 && memChk(memory,user_queue->mbytes)){ // if resources/memory can be allocated for the given process
 			process = pcb_dequeue(&user_queue);
 			process->memory = memAlloc(memory,process->mbytes); // allocating memory
-			process->memory->id = process->id;
+			if (process->memory) { // making sure it is not null
+				process->memory->id = process->id;
+			}
 			io_resources = allocate_resource(io_resources,process);
 			switch (process->priority) {
 				case 0:

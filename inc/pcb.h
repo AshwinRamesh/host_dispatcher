@@ -4,7 +4,6 @@
 #include <unistd.h>
 #include "../inc/mab.h"
 
-
 #define MAX_ARGS	3
 #define MAX_INPUT_SIZE 1024
 #define PROCESS_NAME "./sigtrap"
