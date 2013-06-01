@@ -6,48 +6,32 @@
 #include "../inc/mab.h"
 #include "../inc/resources.h"
 
+/* Global Variables */
 int clock_time;
 
 PcbPtr input_queue = NULL; // queue from reading file
 PcbPtr realtime_queue = NULL; // real time queue
 PcbPtr user_queue = NULL; // user job queue;
-// Below are feedback queues. 1 is highest priority
+
+/* Below are feedback queues. 1 is highest priority */
 PcbPtr p1_queue = NULL;
 PcbPtr p2_queue = NULL;
 PcbPtr p3_queue = NULL;
 
 PcbPtr current_process = NULL; // current process pointer
-
 RsrcPtr io_resources = NULL; // resources for the dispatcher.
-
 MabPtr memory = NULL; // head of the memory linked list
-//MabPtr real_memory = NULL // real time memory item
-
-
-void print_queues() {
-	printf("Printing INPUT QUEUE\n"); 	pcb_printList_forward(input_queue);
-	printf("Printing USER QUEUE\n");		pcb_printList_forward(user_queue);
-	printf("Printing REAL TIME QUEUE \n");	pcb_printList_forward(realtime_queue);
-	printf("Printing P1 QUEUE\n");		pcb_printList_forward(p1_queue);
-	printf("Printing P2 QUEUE\n");		pcb_printList_forward(p2_queue);
-	printf("Printing P3 QUEUE\n");		pcb_printList_forward(p3_queue);
-}
 
 PcbPtr running_processes() {
-	//printf("Process %d is running with Time: %d\n", queue->id,queue->remaining_cpu_time);
 	if (current_process) { // if there is a process running
-		//printf("At clock: %d Process Running: %d with Seconds Remaining: %d -> %d\n", clock_time,current_process->id,current_process->remaining_cpu_time, current_process->remaining_cpu_time-1);
 		current_process->remaining_cpu_time = current_process->remaining_cpu_time -1;
 		if (current_process->remaining_cpu_time <= 0) { // processing time is completed
 			pcb_terminate(current_process);
-			// free resources
 			if (current_process->priority > 0) { // not real time
 				io_resources = free_resource(io_resources,current_process);
 			}
-			//TODO:: FREE MAB HERE
 			memFree(current_process->memory);
 			pcb_free(current_process);
-			//print_queues();
 			current_process = NULL;
 		}
 		else if (realtime_queue || p1_queue || p2_queue || p3_queue){ // suspend and enqueue process back to roundrobin if other waiting processes
@@ -127,12 +111,9 @@ void enqueue_roundrobin() {
 					break;
 			}
 		}
-		else {
-			//printf(" %d resources cannot be allocated for Process %d\n",user_queue->arrival_time, user_queue->id);
+		else { // leave the while loop
 			break;
 		}
-		//memPrint(memory);
-		//exit(1);
 	}
 }
 
@@ -140,7 +121,6 @@ void enqueue_roundrobin() {
 void enqueue_user_real_queues(){
 	PcbPtr process;
 	while(input_queue && input_queue->arrival_time <= clock_time) {
-		//printf("Enqueue from input id: %d arrival %d clock %d\n",input_queue->id,input_queue->arrival_time,clock_time);
 		process = pcb_dequeue(&input_queue);
 		if (process->priority == 0) { // real time queue
 			realtime_queue = pcb_enqueue(realtime_queue,process);
@@ -159,9 +139,7 @@ void dispatcher(PcbPtr queue) {
 	memory = mabCreate(REAL_TIME_MEMORY+USER_TIME_MEMORY);
 	memory = memAlloc(memory,REAL_TIME_MEMORY); // allocate memory for real time
 	memory->id = 999; // 999 is for real time
-	//memPrint(memory);
 	while (input_queue || user_queue || realtime_queue || current_process || p1_queue || p2_queue || p3_queue) {
-		//printf("CLOCK TIME : %d \n .================.\n", clock_time);
 		enqueue_user_real_queues(); // add items to user queue and real time queue
 		enqueue_roundrobin(); // add items to feedback queues if memory can be allocated
 		current_process = running_processes(); //check running process and decrement time / suspend
@@ -176,5 +154,4 @@ void dispatcher(PcbPtr queue) {
 		clock_time = clock_time+1;
 	}
 	destroy_resource(io_resources); // free memory for resources
-	//printf("%s\n", "dispatcher complete");
 }

@@ -1,5 +1,3 @@
-#include "../inc/pcb.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -8,7 +6,9 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <time.h>
+#include "../inc/pcb.h"
 
+/*Global Variables*/
 int id_count = 0;
 
 /* Get last node in queue*/
@@ -21,17 +21,14 @@ PcbPtr pcb_get_tail(PcbPtr head) {
 
 /* Remove pcb in queue and return it */
 PcbPtr pcb_dequeue(PcbPtr *head){
-	//printf("Head ID: %d\n", (*head)->id);
 	if((*head) == NULL) {
 		fprintf(stderr, "Head is null. Cannot Dequeue.\n");
 		return NULL;
 	}
-	//printf("Current Head %d\n", (*head)->id);
 	PcbPtr temp_pcb = *head;
 	*head = (*head)->next;
 	if ((*head) != NULL) {
 		(*head)->prev = NULL; // new head will have null before
-		//printf("Current Head %d\n", (*head)->id);
 	}
 	temp_pcb->next = NULL;
 	temp_pcb->prev = NULL;
@@ -49,7 +46,6 @@ PcbPtr pcb_enqueue_tail(PcbPtr tail, PcbPtr child) {
 /* link new pcb to end of queue. Params: head of queue, new pcb*/
 PcbPtr pcb_enqueue(PcbPtr head, PcbPtr child){
 	if (head == NULL) {
-		//printf("%s\n", "head is null for enqueue");
 		child->next = NULL;
 		child->prev = NULL;
 		head = child;
@@ -85,7 +81,6 @@ PcbPtr pcb_create(int arrival_time, int priority, int processor_time, int mbytes
 	temp_pcb->num_scanners = num_scanners;
 	temp_pcb->num_modems = num_modems;
 	temp_pcb->num_cds = num_cds;
-
 	// set defaults for other variables
 	temp_pcb->pid = 0;
 	temp_pcb->status = WAITING;
@@ -95,7 +90,6 @@ PcbPtr pcb_create(int arrival_time, int priority, int processor_time, int mbytes
 }
 
 /* Free single PCB */
-
 void pcb_free(PcbPtr process) {
 	if (process != NULL) {
 		free(process->args[0]);
@@ -122,7 +116,6 @@ PcbPtr pcb_free_all(PcbPtr pcb_head) {
 
 PcbPtr pcb_start(PcbPtr process) {
 	if (process->status == WAITING) { // process is currently waiting
-		//printf("Starting Process: %d\n", process->id);
 		process->status = RUNNING;
 		switch(process->pid = fork()) {
 			case -1:
@@ -131,7 +124,6 @@ PcbPtr pcb_start(PcbPtr process) {
 				break;
 			case 0:
 				process->status = RUNNING;
-				//printf(" ARGS: %s\n", process->args[1]);
 				execvp(process->args[0],process->args);
 				break;
 			default:
@@ -140,7 +132,6 @@ PcbPtr pcb_start(PcbPtr process) {
 		return process;
 	}
 	else if (process->status == SUSPENDED) { // process is currently suspended
-		//printf("Restarting Process: %d\n", process->id);
 		if (kill(process->pid, SIGCONT)) {
        			fprintf(stderr, "Restart of process:%dfailed\n",process->id);
         			return NULL;
@@ -159,7 +150,6 @@ PcbPtr pcb_terminate(PcbPtr process) {
 		fprintf(stderr, "Termination failed for pid: %d\n", process->pid);
 		return NULL;
 	}
-	//printf("Terminating ID: %d\n", process->id);
 	int status;
 	process->status = STOPPED;
 	waitpid(process->pid,&status,WUNTRACED);
@@ -167,7 +157,6 @@ PcbPtr pcb_terminate(PcbPtr process) {
 }
 
 PcbPtr pcb_suspend(PcbPtr process) {
-	//printf("Suspending Process %d\n",process->id );
 	if(kill(process->pid,SIGTSTP)) {
 		fprintf(stderr, "Suspending Process:%d failed\n",process->id );
 	}

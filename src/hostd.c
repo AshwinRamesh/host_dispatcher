@@ -10,13 +10,11 @@
 #include <sys/wait.h>
 #include <time.h>
 
-
 int main(int argc, char const *argv[]){
-
 	/*Initialise Variables*/
 	FILE *file; // input file
 	PcbPtr process_queue; // the pcb queue
-
+	/* Validating Program Arguments */
 	if (argc != 2) {
 		printf("%s\n", "Usage: hostd <filename>");
 		return EXIT_FAILURE;
@@ -25,18 +23,13 @@ int main(int argc, char const *argv[]){
 		printf("%s\n", "File does not exist.");
 		return EXIT_FAILURE;
 	}
-
 	/* Get process queue */
-	printf("%s\n", "being reading file");
 	process_queue = read_file(file);
 	fclose(file);
 	file = NULL;
 	if (process_queue == NULL) { // error in reading
 		return EXIT_FAILURE;
 	}
-	/* TODO */
-	//pcb_printList(process_queue);
-	printf("Begin Dispatcher\n");
 	dispatcher(process_queue);
 	return 0;
 }

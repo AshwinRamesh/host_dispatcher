@@ -9,19 +9,14 @@ MabPtr mabCreate(int size) {
 	m->offset = 0;
 	m->size = size;
 	m->allocated = 0;
-
 	m->prev = NULL;
 	m->next = NULL;
-
 	return m;
 }
-
-
 
 /* Check if a specified size of memory exists */
 MabPtr memChk(MabPtr m, int size) {
 	while (m) {
-		//printf("Memory offset: %d\n", m->offset);
 		if (m->allocated == ALLOCATED_FALSE && m->size >= size) {
 			return m;
 		}
@@ -32,16 +27,11 @@ MabPtr memChk(MabPtr m, int size) {
 
 /* Allocates memory block of given size */
 MabPtr memAlloc(MabPtr m, int size){
-	//printf("Start\n");
-	//memPrint(m);
 	if (size > 0) {
 		MabPtr temp = memChk(m,size);
-	//	printf("Temp ID: %d\n", temp->id);
 		if (temp) {
 			temp = memSplit(temp,size);
 			temp->allocated = ALLOCATED_TRUE;
-	//		printf("Allocating: %d\n", temp->size);
-			//memPrint(temp);
 			return temp;
 		}
 	}
@@ -93,15 +83,10 @@ MabPtr memSplit(MabPtr m, int size){
 	if (right->next) {
 		right->next->prev = right;
 	}
-
 	//Offset
 	left->offset = m->offset;
 	right->offset = left->offset + size;
-
-	// Assigning left
 	free(m);
-	//printf("LEFT Memory ID: %d Size: %d Offset: %d \n",left->id,left->size,left->offset);
-	//printf("RIGHT Memory ID: %d Size: %d Offset: %d \n",right->id,right->size,right->offset);
 	return left;
 }
 

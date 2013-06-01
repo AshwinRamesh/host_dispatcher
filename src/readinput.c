@@ -4,14 +4,12 @@
 #include <stdlib.h>
 #include <string.h>
 
+/* Read Input */
 PcbPtr read_file(FILE *file) {
-
 	PcbPtr process_queue_head = NULL;
 	PcbPtr process_queue_tail = NULL;
 	PcbPtr temp_pcb = NULL;
-
 	char buffer[MAX_INPUT_SIZE];
-
 	int arrival_time;
 	int priority;
 	int processor_time;
@@ -20,6 +18,7 @@ PcbPtr read_file(FILE *file) {
 	int num_scanners;
 	int num_modems;
 	int num_cds;
+
 	/* Read each line of the file */
 	while(fgets(buffer,sizeof(buffer),file) != NULL) {
 		int arg_count = sscanf(buffer,"%d, %d, %d, %d, %d, %d, %d, %d", &arrival_time, &priority, &processor_time, &mbytes, &num_printers, &num_scanners, &num_modems, &num_cds);
