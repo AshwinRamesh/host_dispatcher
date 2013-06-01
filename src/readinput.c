@@ -59,7 +59,6 @@ int validate_input_line(int arrival_time, int priority, int processor_time, int 
 	if (processor_time < 0) {
 		return 0;
 	}
-	printf("Correct Input\n");
 	return 1; // Proper input
 }
 
@@ -112,7 +111,6 @@ PcbPtr read_file(char * file_name) {
 			}
 		}
 		else { // error in input row
-			printf("Error\n");
 			fprintf(stderr, "Input line given has incorrect parameters and does not fit with the dispatcher specs. Ignoring line...\n");
 		}
 	}

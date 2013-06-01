@@ -1,11 +1,11 @@
 #!/bin/bash
-
+# runs all tests in the tests folder.
 make
-./hostd tests/rr_test.txt > output.txt &
-echo "running $!"
-p_id=$!
-sleep 6
-kill $p_id
-date > output_small.txt
-head -n 300 output.txt >> output_small.txt
-rm output.txt
+FILES=./tests/*
+echo "Starting tests..."
+for f in $FILES
+do
+	echo "************************************** STARTING TEST $f*****************************************************"
+	./hostd ./tests/$f
+	echo "************************************** DONE TEST ******************************************************"
+done
