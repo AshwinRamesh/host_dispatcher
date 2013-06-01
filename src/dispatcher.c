@@ -134,7 +134,6 @@ void enqueue_user_real_queues(){
 void dispatcher(PcbPtr queue) {
 	clock_time = 0;
 	input_queue = queue;
-	pcb_printList(queue);
 	io_resources = create_resource(PRINTERS,SCANNERS,MODEMS,CDS);
 	memory = mabCreate(REAL_TIME_MEMORY+USER_TIME_MEMORY);
 	memory = memAlloc(memory,REAL_TIME_MEMORY); // allocate memory for real time
@@ -144,12 +143,6 @@ void dispatcher(PcbPtr queue) {
 		enqueue_roundrobin(); // add items to feedback queues if memory can be allocated
 		current_process = running_processes(); //check running process and decrement time / suspend
 		start_process(); // start next process in RR queue
-		if (current_process) {
-			printf("Clock: %d Process Running: %d\n", clock_time+1,current_process->id);
-		}
-		else {
-			printf("Clock: %d. No Process Running\n",clock_time+1);
-		}
 		sleep(1);
 		clock_time = clock_time+1;
 	}
