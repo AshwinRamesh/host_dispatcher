@@ -27,7 +27,7 @@ MabPtr memChk(MabPtr m, int size) {
 
 /* Allocates memory block of given size */
 MabPtr memAlloc(MabPtr m, int size){
-	if (size > 0) {
+	if (size > 0) { // only allocate if memory is > 0
 		MabPtr temp = memChk(m,size);
 		if (temp) {
 			temp = memSplit(temp,size);
@@ -54,7 +54,6 @@ MabPtr memFree_all(MabPtr m) {
 
 /* Free a MAB */
 MabPtr memFree(MabPtr m){
-	//memPrint(m);
 	if (m != NULL){
 		m->allocated = ALLOCATED_FALSE;
 		MabPtr prev = m->prev;
@@ -67,7 +66,7 @@ MabPtr memFree(MabPtr m){
 
 /* Merge MAB with next MAB */
 MabPtr memMerge(MabPtr m){
-	if (m && m->next && m->allocated == ALLOCATED_FALSE && m->next->allocated == ALLOCATED_FALSE) {
+	if (m && m->next && m->allocated == ALLOCATED_FALSE && m->next->allocated == ALLOCATED_FALSE) { // if the current MAB and MAB->next are not allocated then merge
 		MabPtr temp = m->next;
 		m->size = m->size + temp->size;
 		m->next = temp->next;
@@ -85,6 +84,7 @@ MabPtr memSplit(MabPtr m, int size){
 	if (m->size == size) {
 		return m;
 	}
+	// Create new MABs and link them together
 	MabPtr left = mabCreate(size);
 	MabPtr right = mabCreate(m->size - size);
 	left->prev = m->prev;
@@ -97,7 +97,7 @@ MabPtr memSplit(MabPtr m, int size){
 	if (right->next) {
 		right->next->prev = right;
 	}
-	//Offset
+	//Set Offsets
 	left->offset = m->offset;
 	right->offset = left->offset + size;
 	free(m);
@@ -109,7 +109,6 @@ MabPtr memGetHead(MabPtr mem) {
 	MabPtr m = mem;
 	while (m) {
 		if (m->prev == NULL) {
-			//printf("Head ID is %d\n", m->id);
 			return m;
 		}
 		m = m->prev;
@@ -117,6 +116,7 @@ MabPtr memGetHead(MabPtr mem) {
 	return m; // return front of list or NULL
 }
 
+/* Print the MAB linked list */
 void memPrint(MabPtr mem) {
 	MabPtr m = memGetHead(mem);
 	while (m) {

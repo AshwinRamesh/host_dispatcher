@@ -22,14 +22,16 @@ PcbPtr current_process = NULL; // current process pointer
 RsrcPtr io_resources = NULL; // resources for the dispatcher.
 MabPtr memory = NULL; // head of the memory linked list
 
+/* Checks for currently running processes. Stops it if time is up, Pauses it if queue is not empty */
 PcbPtr running_processes() {
 	if (current_process) { // if there is a process running
-		current_process->remaining_cpu_time = current_process->remaining_cpu_time -1;
+		current_process->remaining_cpu_time = current_process->remaining_cpu_time -1; // decrement time
 		if (current_process->remaining_cpu_time <= 0 || (current_process->processor_time - current_process->remaining_cpu_time >= 20)) { // processing time is completed
 			pcb_terminate(current_process);
 			if (current_process->priority > 0) { // not real time
 				io_resources = free_resource(io_resources,current_process);
 			}
+			/* Free memory relating to the finished process*/
 			memFree(current_process->memory);
 			pcb_free(current_process);
 			current_process = NULL;
@@ -63,7 +65,7 @@ PcbPtr running_processes() {
 
 /* Start next process in p*_queue. return current process */
 PcbPtr start_process() {
-	if (current_process == NULL && (realtime_queue || p1_queue || p2_queue || p3_queue)) {
+	if (current_process == NULL && (realtime_queue || p1_queue || p2_queue || p3_queue)) { // start the next process if the queue exists
 		if (realtime_queue) {
 			current_process = pcb_dequeue(&realtime_queue);
 		}
@@ -88,7 +90,7 @@ PcbPtr start_process() {
 /* Move head of userqueue to feedback queues */
 void enqueue_roundrobin() {
 	PcbPtr process;
-	while (user_queue) {
+	while (user_queue) { // while there are items in the user queue
 		if (check_resource(io_resources,user_queue) == 1 && memChk(memory,user_queue->mbytes)){ // if resources/memory can be allocated for the given process
 			process = pcb_dequeue(&user_queue);
 			process->memory = memAlloc(memory,process->mbytes); // allocating memory
@@ -113,7 +115,7 @@ void enqueue_roundrobin() {
 					break;
 			}
 		}
-		else { // leave the while loop
+		else { // leave the while loop when the above condition fails
 			break;
 		}
 	}
@@ -122,7 +124,7 @@ void enqueue_roundrobin() {
 /* Move input->head of queue to user queue */
 void enqueue_user_real_queues(){
 	PcbPtr process;
-	while(input_queue && input_queue->arrival_time <= clock_time) {
+	while(input_queue && input_queue->arrival_time <= clock_time) { // enqueue onto user/real queues when arrival time is reached
 		process = pcb_dequeue(&input_queue);
 		if (process->priority == 0) { // real time queue
 			realtime_queue = pcb_enqueue(realtime_queue,process);
@@ -133,6 +135,7 @@ void enqueue_user_real_queues(){
 	}
 }
 
+/* dispatcher function. Uses the above functions to run. */
 void dispatcher(PcbPtr queue) {
 	clock_time = 0;
 	input_queue = queue;
@@ -140,7 +143,7 @@ void dispatcher(PcbPtr queue) {
 	memory = mabCreate(REAL_TIME_MEMORY+USER_TIME_MEMORY);
 	memory = memAlloc(memory,REAL_TIME_MEMORY); // allocate memory for real time
 	memory->id = 999; // 999 is for real time
-	while (input_queue || user_queue || realtime_queue || current_process || p1_queue || p2_queue || p3_queue) {
+	while (input_queue || user_queue || realtime_queue || current_process || p1_queue || p2_queue || p3_queue) { // there are items in the queues or a process is running
 		enqueue_user_real_queues(); // add items to user queue and real time queue
 		enqueue_roundrobin(); // add items to feedback queues if memory can be allocated
 		current_process = running_processes(); //check running process and decrement time / suspend
@@ -148,6 +151,6 @@ void dispatcher(PcbPtr queue) {
 		sleep(1);
 		clock_time = clock_time+1;
 	}
-	memFree_all(memory);
+	memFree_all(memory); // free any remaining memory
 	destroy_resource(io_resources); // free memory for resources
 }

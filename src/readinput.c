@@ -17,7 +17,7 @@ int count_file_lines(char* file_name) {
 	int count=0;
 	do {
 		ch = fgetc(file);
-		if (ch == '\n') {
+		if (ch == '\n') { // check for each new line character
 			count++;
 		}
 	}while(ch != EOF);
@@ -64,6 +64,7 @@ int validate_input_line(int arrival_time, int priority, int processor_time, int 
 
 /* Read Input */
 PcbPtr read_file(char * file_name) {
+	// variable initialisation
 	PcbPtr process_queue_head = NULL;
 	PcbPtr process_queue_tail = NULL;
 	PcbPtr temp_pcb = NULL;
@@ -77,7 +78,6 @@ PcbPtr read_file(char * file_name) {
 	int num_modems;
 	int num_cds;
 	FILE *file;
-
 	/*Check that there are not too many lines in file*/
 	int lines = count_file_lines(file_name);
 	if (lines > MAX_INPUT_LINES) {
@@ -90,7 +90,7 @@ PcbPtr read_file(char * file_name) {
 		exit(1);
 	}
 	int line = 0;
-	while(fgets(buffer,sizeof(buffer),file) != NULL) {
+	while(fgets(buffer,sizeof(buffer),file) != NULL) { // for each line in the file
 		line++;
 		int arg_count = sscanf(buffer,"%d, %d, %d, %d, %d, %d, %d, %d", &arrival_time, &priority, &processor_time, &mbytes, &num_printers, &num_scanners, &num_modems, &num_cds);
 		/* Error in the file input line itself*/
@@ -102,13 +102,13 @@ PcbPtr read_file(char * file_name) {
 		int correct_input = validate_input_line(arrival_time,priority,processor_time,mbytes,num_printers,num_scanners,num_modems,num_cds);
 		if (correct_input == 1) {
 			temp_pcb = pcb_create(arrival_time,priority,processor_time,mbytes,num_printers,num_scanners,num_modems,num_cds);
-			if (process_queue_head == NULL){
+			if (process_queue_head == NULL){ // if queue is empty
 				process_queue_head = pcb_enqueue(process_queue_head,temp_pcb);
 			}
-			else if (process_queue_tail == NULL) {
+			else if (process_queue_tail == NULL) { // if queue only has 1 item (no tail)
 				process_queue_tail = pcb_enqueue(process_queue_head,temp_pcb)->next;
 			}
-			else {
+			else { // queue has head and tail
 				process_queue_tail = pcb_enqueue_tail(process_queue_tail,temp_pcb);
 			}
 		}

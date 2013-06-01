@@ -45,22 +45,22 @@ PcbPtr pcb_enqueue_tail(PcbPtr tail, PcbPtr child) {
 
 /* link new pcb to end of queue. Params: head of queue, new pcb*/
 PcbPtr pcb_enqueue(PcbPtr head, PcbPtr child){
-	if (head == NULL) {
+	if (head == NULL) { // head is null. nothing in queue
 		child->next = NULL;
 		child->prev = NULL;
 		head = child;
 	}
-	else if (head->next == NULL) {
+	else if (head->next == NULL) { // head is only node in queue or is tail of queue
 		pcb_enqueue_tail(head,child);
 	}
-	else {
+	else { // inner node
 		PcbPtr tail = pcb_get_tail(head);
 		pcb_enqueue_tail(tail,child);
 	}
 	return head;
 }
 
-/* Create mew pcb and return its address */
+/* Create new pcb and return its address */
 PcbPtr pcb_create(int arrival_time, int priority, int processor_time, int mbytes, int num_printers, int num_scanners, int num_modems, int num_cds){
 	id_count = id_count + 1; // increment ID count
 	PcbPtr temp_pcb = (PcbPtr)malloc(sizeof(Pcb));
@@ -114,6 +114,7 @@ PcbPtr pcb_free_all(PcbPtr pcb_head) {
 	}
 }
 
+/* Start process of the given PCB */
 PcbPtr pcb_start(PcbPtr process) {
 	if (process->status == WAITING) { // process is currently waiting
 		process->status = RUNNING;
@@ -145,6 +146,7 @@ PcbPtr pcb_start(PcbPtr process) {
 	return NULL; // null if error
 }
 
+/* Terminate the PCB */
 PcbPtr pcb_terminate(PcbPtr process) {
 	if(kill(process->pid,SIGINT) != 0) { // error
 		fprintf(stderr, "Termination failed for pid: %d\n", process->pid);
@@ -156,6 +158,7 @@ PcbPtr pcb_terminate(PcbPtr process) {
 	return process;
 }
 
+/* Suspend the PCB */
 PcbPtr pcb_suspend(PcbPtr process) {
 	if(kill(process->pid,SIGTSTP)) {
 		fprintf(stderr, "Suspending Process:%d failed\n",process->id );

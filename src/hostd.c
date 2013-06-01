@@ -11,19 +11,17 @@
 #include <time.h>
 
 int main(int argc, char const *argv[]){
-	/*Initialise Variables*/
 	PcbPtr process_queue; // the pcb queue
-	/* Validating Program Arguments */
-	if (argc != 2) {
+	if (argc != 2) { // ensure that there is only 1 arg provided to hostd
 		printf("%s\n", "Usage: hostd <filename>");
 		return EXIT_FAILURE;
 	}
 	char file_name[MAX_INPUT_SIZE];
-	strcpy(file_name,argv[1]);
-	process_queue = read_file(file_name);
+	strcpy(file_name,argv[1]); // copy the arg to a string
+	process_queue = read_file(file_name); // process the input queue from the file
 	if (process_queue == NULL) { // error in reading
 		return EXIT_FAILURE;
 	}
-	dispatcher(process_queue);
+	dispatcher(process_queue); // run the dispatcher
 	return 0;
 }
