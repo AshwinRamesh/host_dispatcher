@@ -5,7 +5,13 @@ FILES=./tests/*
 echo "Starting tests..."
 for f in $FILES
 do
-	echo "************************************** STARTING TEST $f*****************************************************"
-	./hostd ./tests/$f
+	echo "************************************** STARTING TEST $f *****************************************************"
+	#echo "Command: ./hostd $f"
+	./hostd $f
 	echo "************************************** DONE TEST ******************************************************"
 done
+# run a test on non existing file
+echo "************************************** STARTING TEST ./tests/no_file_here.txt  *****************************************************"
+./hostd ./tests/no_file_here.txt
+echo "************************************** DONE TEST ******************************************************"
+echo "Tests Complete"

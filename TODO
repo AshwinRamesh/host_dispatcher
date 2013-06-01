@@ -14,6 +14,8 @@ Testing:
 
 	Testing Input File
 		- Too many lines of input (WORKS)
+		- Negative Memory (WORKS)
+		- Negative Resources (WORKS)
 		- Too much memory allocation
 		- Too much resources
 		- Resource and Priority dont match
