@@ -1,10 +1,7 @@
 - make sure the input is correct - 0 = no resources etc.
 - error checking
 - make sure not too many resources defined in input
-- do Memory management
--do checks if error then memory will be freed
-- terminate after 20 sec
-- do we deallocate memory if there are no real time items?
+-check for mem leaks
 
 Testing:
 	General Testing:

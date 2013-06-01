@@ -148,5 +148,6 @@ void dispatcher(PcbPtr queue) {
 		sleep(1);
 		clock_time = clock_time+1;
 	}
+	memFree_all(memory);
 	destroy_resource(io_resources); // free memory for resources
 }

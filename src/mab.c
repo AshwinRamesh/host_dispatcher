@@ -38,6 +38,20 @@ MabPtr memAlloc(MabPtr m, int size){
 	return NULL;
 }
 
+/* Free all remaining MAB */
+MabPtr memFree_all(MabPtr m) {
+	m = memGetHead(m);
+	MabPtr next;
+	while (m) {
+		next = m->next;
+		free(m);
+		m = next;
+	}
+	next = NULL;
+	m = NULL;
+	return NULL;
+}
+
 /* Free a MAB */
 MabPtr memFree(MabPtr m){
 	//memPrint(m);

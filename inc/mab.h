@@ -22,6 +22,7 @@ typedef Mab * MabPtr;
 MabPtr mabCreate(int size);
 MabPtr memChk(MabPtr m, int size);
 MabPtr memAlloc(MabPtr m, int size);
+MabPtr memFree_all(MabPtr m);
 MabPtr memFree(MabPtr m);
 MabPtr memMerge(MabPtr m);
 MabPtr memSplit(MabPtr m, int size);
