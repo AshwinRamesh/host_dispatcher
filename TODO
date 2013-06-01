@@ -11,6 +11,7 @@ Testing:
 		- No memory usage (FAILS)
 		- No resource usage (WORKS)
 		- Normal Testing (WORKS)
+		- Process >20 seconds
 
 	Testing Input File
 		- Too many lines of input (WORKS)

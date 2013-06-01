@@ -25,7 +25,7 @@ MabPtr memory = NULL; // head of the memory linked list
 PcbPtr running_processes() {
 	if (current_process) { // if there is a process running
 		current_process->remaining_cpu_time = current_process->remaining_cpu_time -1;
-		if (current_process->remaining_cpu_time <= 0) { // processing time is completed
+		if (current_process->remaining_cpu_time <= 0 || (current_process->processor_time - current_process->remaining_cpu_time >= 20)) { // processing time is completed
 			pcb_terminate(current_process);
 			if (current_process->priority > 0) { // not real time
 				io_resources = free_resource(io_resources,current_process);
