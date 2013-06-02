@@ -55,8 +55,8 @@ int validate_input_line(int arrival_time, int priority, int processor_time, int 
 	if (arrival_time < 0) {
 		return 0;
 	}
-	// check that processor time is not negative
-	if (processor_time < 0) {
+	// check that processor time is not negative or 0
+	if (processor_time <= 0) {
 		return 0;
 	}
 	return 1; // Proper input
