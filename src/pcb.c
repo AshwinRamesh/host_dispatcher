@@ -125,6 +125,7 @@ PcbPtr pcb_start(PcbPtr process) {
 				break;
 			case 0:
 				process->status = RUNNING;
+				printf("ID: %d pid: %d priority: %d arrival: %d remaining time: %d offset: %d mbytes: %d prn: %d scn: %d modem: %d cd: %d \n",process->id, getpid(),process->priority,process->arrival_time,process->remaining_cpu_time,process->memory->offset,process->mbytes,process->num_printers,process->num_scanners,process->num_modems,process->num_cds);
 				execvp(process->args[0],process->args);
 				break;
 			default:

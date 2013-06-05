@@ -32,7 +32,9 @@ PcbPtr running_processes() {
 				io_resources = free_resource(io_resources,current_process);
 			}
 			/* Free memory relating to the finished process*/
-			memFree(current_process->memory);
+			if (current_process->priority != 0) {
+				memFree(current_process->memory);
+			}
 			pcb_free(current_process);
 			current_process = NULL;
 		}
@@ -68,6 +70,7 @@ PcbPtr start_process() {
 	if (current_process == NULL && (realtime_queue || p1_queue || p2_queue || p3_queue)) { // start the next process if the queue exists
 		if (realtime_queue) {
 			current_process = pcb_dequeue(&realtime_queue);
+			current_process->memory = memory;
 		}
 		else if (p1_queue) {
 			current_process = pcb_dequeue(&p1_queue);
