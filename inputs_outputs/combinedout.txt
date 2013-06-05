@@ -1,0 +1,46 @@
+    pid arrive  prior    cpu offset Mbytes     prn    scn   modem   cd  status
+  16416      0      1      2     64    128      1      0      0      1  RUNNING
+[30m[47m  16416; START[30m[0m
+[30m[47m  16416; tick 1[30m[0m
+[30m[47m  16416; SIGTSTP[30m[0m
+    pid arrive  prior    cpu offset Mbytes     prn    scn   modem   cd  status
+  16417      1      0      1      0     64      0      0      0      0  RUNNING
+[36m[41m  16417; START[30m[0m
+[36m[41m  16417; tick 1[30m[0m
+[36m[41m  16417; SIGINT[30m[0m
+    pid arrive  prior    cpu offset Mbytes     prn    scn   modem   cd  status
+  16418      1      1      1    192    128      0      0      0      0  RUNNING
+[32m[45m  16418; START[30m[0m
+[32m[45m  16418; tick 1[30m[0m
+[32m[45m  16418; SIGINT[30m[0m
+    pid arrive  prior    cpu offset Mbytes     prn    scn   modem   cd  status
+  16419      1      1      2    320    256      1      0      0      0  RUNNING
+[34m[43m  16419; START[30m[0m
+[34m[43m  16419; tick 1[30m[0m
+[34m[43m  16419; SIGTSTP[30m[0m
+[30m[47m  16416; SIGCONT[30m[0m
+[30m[47m  16416; tick 2[30m[0m
+[30m[47m  16416; SIGINT[30m[0m
+[34m[43m  16419; SIGCONT[30m[0m
+[34m[43m  16419; tick 2[30m[0m
+[34m[43m  16419; SIGINT[30m[0m
+    pid arrive  prior    cpu offset Mbytes     prn    scn   modem   cd  status
+  16420      2      1      3     64    256      0      0      0      2  RUNNING
+[30m[46m  16420; START[30m[0m
+[30m[46m  16420; tick 1[30m[0m
+[30m[46m  16420; tick 2[30m[0m
+[30m[46m  16420; SIGTSTP[30m[0m
+    pid arrive  prior    cpu offset Mbytes     prn    scn   modem   cd  status
+  16421      8      0      1      0     64      0      0      0      0  RUNNING
+[37m[41m  16421; START[30m[0m
+[37m[41m  16421; tick 1[30m[0m
+[37m[41m  16421; SIGINT[30m[0m
+[30m[46m  16420; SIGCONT[30m[0m
+[30m[46m  16420; tick 3[30m[0m
+[30m[46m  16420; SIGINT[30m[0m
+    pid arrive  prior    cpu offset Mbytes     prn    scn   modem   cd  status
+  16422      3      1      2     64    770      1      0      0      0  RUNNING
+[34m[42m  16422; START[30m[0m
+[34m[42m  16422; tick 1[30m[0m
+[34m[42m  16422; tick 2[30m[0m
+[34m[42m  16422; SIGINT[30m[0m

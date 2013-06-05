@@ -1,0 +1,72 @@
+    pid arrive  prior    cpu offset Mbytes     prn    scn   modem   cd  status
+  16361      0      1      1     64    192      0      0      0      0  RUNNING
+[33m[41m  16361; START[30m[0m
+[33m[41m  16361; tick 1[30m[0m
+[33m[41m  16361; SIGINT[30m[0m
+    pid arrive  prior    cpu offset Mbytes     prn    scn   modem   cd  status
+  16362      0      1      3    256     32      0      0      0      0  RUNNING
+[34m[46m  16362; START[30m[0m
+[34m[46m  16362; tick 1[30m[0m
+[34m[46m  16362; SIGTSTP[30m[0m
+    pid arrive  prior    cpu offset Mbytes     prn    scn   modem   cd  status
+  16363      0      1      1    288    416      0      0      0      0  RUNNING
+[35m[47m  16363; START[30m[0m
+[35m[47m  16363; tick 1[30m[0m
+[35m[47m  16363; SIGINT[30m[0m
+    pid arrive  prior    cpu offset Mbytes     prn    scn   modem   cd  status
+  16364      0      1      3    704     32      0      0      0      0  RUNNING
+[30m[43m  16364; START[30m[0m
+[30m[43m  16364; tick 1[30m[0m
+[30m[43m  16364; SIGTSTP[30m[0m
+    pid arrive  prior    cpu offset Mbytes     prn    scn   modem   cd  status
+  16365      0      1      1    736    160      0      0      0      0  RUNNING
+[32m[41m  16365; START[30m[0m
+[32m[41m  16365; tick 1[30m[0m
+[32m[41m  16365; SIGINT[30m[0m
+    pid arrive  prior    cpu offset Mbytes     prn    scn   modem   cd  status
+  16366      0      1      3    896    128      0      0      0      0  RUNNING
+[34m[47m  16366; START[30m[0m
+[34m[47m  16366; tick 1[30m[0m
+[34m[47m  16366; SIGTSTP[30m[0m
+[34m[46m  16362; SIGCONT[30m[0m
+[34m[46m  16362; tick 2[30m[0m
+[34m[46m  16362; SIGTSTP[30m[0m
+    pid arrive  prior    cpu offset Mbytes     prn    scn   modem   cd  status
+  16367      7      1      2     64    108      0      0      0      0  RUNNING
+[36m[45m  16367; START[30m[0m
+[36m[45m  16367; tick 1[30m[0m
+[36m[45m  16367; SIGTSTP[30m[0m
+    pid arrive  prior    cpu offset Mbytes     prn    scn   modem   cd  status
+  16368      7      1      2    288    256      0      0      0      0  RUNNING
+[37m[40m  16368; START[30m[0m
+[37m[40m  16368; tick 1[30m[0m
+[37m[40m  16368; SIGTSTP[30m[0m
+    pid arrive  prior    cpu offset Mbytes     prn    scn   modem   cd  status
+  16369      7      1      2    172     80      0      0      0      0  RUNNING
+[31m[46m  16369; START[30m[0m
+[31m[46m  16369; tick 1[30m[0m
+[31m[46m  16369; SIGTSTP[30m[0m
+[30m[43m  16364; SIGCONT[30m[0m
+[30m[43m  16364; tick 2[30m[0m
+[30m[43m  16364; SIGTSTP[30m[0m
+[34m[47m  16366; SIGCONT[30m[0m
+[34m[47m  16366; tick 2[30m[0m
+[34m[47m  16366; SIGTSTP[30m[0m
+[36m[45m  16367; SIGCONT[30m[0m
+[36m[45m  16367; tick 2[30m[0m
+[36m[45m  16367; SIGINT[30m[0m
+[37m[40m  16368; SIGCONT[30m[0m
+[37m[40m  16368; tick 2[30m[0m
+[37m[40m  16368; SIGINT[30m[0m
+[31m[46m  16369; SIGCONT[30m[0m
+[31m[46m  16369; tick 2[30m[0m
+[31m[46m  16369; SIGINT[30m[0m
+[34m[46m  16362; SIGCONT[30m[0m
+[34m[46m  16362; tick 3[30m[0m
+[34m[46m  16362; SIGINT[30m[0m
+[30m[43m  16364; SIGCONT[30m[0m
+[30m[43m  16364; tick 3[30m[0m
+[30m[43m  16364; SIGINT[30m[0m
+[34m[47m  16366; SIGCONT[30m[0m
+[34m[47m  16366; tick 3[30m[0m
+[34m[47m  16366; SIGINT[30m[0m

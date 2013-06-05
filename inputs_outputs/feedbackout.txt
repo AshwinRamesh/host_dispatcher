@@ -1,0 +1,68 @@
+    pid arrive  prior    cpu offset Mbytes     prn    scn   modem   cd  status
+  16351      0      1      3     64     64      0      0      0      0  RUNNING
+[35m[46m  16351; START[30m[0m
+[35m[46m  16351; tick 1[30m[0m
+[35m[46m  16351; tick 2[30m[0m
+[35m[46m  16351; SIGTSTP[30m[0m
+    pid arrive  prior    cpu offset Mbytes     prn    scn   modem   cd  status
+  16352      2      1      6    128     64      0      0      0      0  RUNNING
+[30m[47m  16352; START[30m[0m
+[30m[47m  16352; tick 1[30m[0m
+[30m[47m  16352; SIGTSTP[30m[0m
+[35m[46m  16351; SIGCONT[30m[0m
+[35m[46m  16351; tick 3[30m[0m
+[35m[46m  16351; SIGINT[30m[0m
+    pid arrive  prior    cpu offset Mbytes     prn    scn   modem   cd  status
+  16353      4      1      4    192     64      0      0      0      0  RUNNING
+[36m[41m  16353; START[30m[0m
+[36m[41m  16353; tick 1[30m[0m
+[36m[41m  16353; SIGTSTP[30m[0m
+[30m[47m  16352; SIGCONT[30m[0m
+[30m[47m  16352; tick 2[30m[0m
+[30m[47m  16352; SIGTSTP[30m[0m
+    pid arrive  prior    cpu offset Mbytes     prn    scn   modem   cd  status
+  16354      6      1      5     64     64      0      0      0      0  RUNNING
+[32m[45m  16354; START[30m[0m
+[32m[45m  16354; tick 1[30m[0m
+[32m[45m  16354; SIGTSTP[30m[0m
+[36m[41m  16353; SIGCONT[30m[0m
+[36m[41m  16353; tick 2[30m[0m
+[36m[41m  16353; SIGTSTP[30m[0m
+    pid arrive  prior    cpu offset Mbytes     prn    scn   modem   cd  status
+  16355      8      1      2    256     64      0      0      0      0  RUNNING
+[34m[43m  16355; START[30m[0m
+[34m[43m  16355; tick 1[30m[0m
+[34m[43m  16355; SIGTSTP[30m[0m
+[32m[45m  16354; SIGCONT[30m[0m
+[32m[45m  16354; tick 2[30m[0m
+[32m[45m  16354; SIGTSTP[30m[0m
+[34m[43m  16355; SIGCONT[30m[0m
+[34m[43m  16355; tick 2[30m[0m
+[34m[43m  16355; SIGINT[30m[0m
+[30m[47m  16352; SIGCONT[30m[0m
+[30m[47m  16352; tick 3[30m[0m
+[30m[47m  16352; SIGTSTP[30m[0m
+[36m[41m  16353; SIGCONT[30m[0m
+[36m[41m  16353; tick 3[30m[0m
+[36m[41m  16353; SIGTSTP[30m[0m
+[32m[45m  16354; SIGCONT[30m[0m
+[32m[45m  16354; tick 3[30m[0m
+[32m[45m  16354; SIGTSTP[30m[0m
+[30m[47m  16352; SIGCONT[30m[0m
+[30m[47m  16352; tick 4[30m[0m
+[30m[47m  16352; SIGTSTP[30m[0m
+[36m[41m  16353; SIGCONT[30m[0m
+[36m[41m  16353; tick 4[30m[0m
+[36m[41m  16353; SIGINT[30m[0m
+[32m[45m  16354; SIGCONT[30m[0m
+[32m[45m  16354; tick 4[30m[0m
+[32m[45m  16354; SIGTSTP[30m[0m
+[30m[47m  16352; SIGCONT[30m[0m
+[30m[47m  16352; tick 5[30m[0m
+[30m[47m  16352; SIGTSTP[30m[0m
+[32m[45m  16354; SIGCONT[30m[0m
+[32m[45m  16354; tick 5[30m[0m
+[32m[45m  16354; SIGINT[30m[0m
+[30m[47m  16352; SIGCONT[30m[0m
+[30m[47m  16352; tick 6[30m[0m
+[30m[47m  16352; SIGINT[30m[0m
